@@ -1,0 +1,1 @@
+{"code": "const did = await web5.did.create('ion');", "explanation": "Create a Decentralized Identifier (DID). This one creates one of the ION did method type."}
