@@ -1,0 +1,27 @@
+name: Create Issue On Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Create Issue
+      uses: actions/github-script@v5
+      with:
+        github-token: ${{ secrets.DOCS_PAT }}  # Assuming 'PAT' is your Personal Access Token stored as a secret
+        script: |
+          const issueTitle = `New Release: ${context.payload.release.tag_name} - ${context.payload.release.name}`;
+          const issueBody = `There is a new release, [${context.payload.release.tag_name}](${context.payload.release.html_url}), in this repository. 
+          Please refer to the release notes [here](${context.payload.release.html_url}). This is of maximum urgency.`;
+
+          github.rest.issues.create({
+            owner: 'TBD54566975',  # Replace with your organization's name
+            repo: 'developer.tbd.website',  # Replace with your other repository's name
+            title: issueTitle,
+            body: issueBody,
+            labels: ['urgent']  # Add your own labels here
+          });
