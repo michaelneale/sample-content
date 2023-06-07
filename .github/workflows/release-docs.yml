@@ -10,7 +10,7 @@ jobs:
 
     steps:
     - name: Create Issue
-      uses: actions/github-script@v5
+      uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.DOCS_PAT }}  # Assuming 'PAT' is your Personal Access Token stored as a secret
         script: |
