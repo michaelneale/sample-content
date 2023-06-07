@@ -14,14 +14,10 @@ jobs:
       with:
         github-token: ${{ secrets.DOCS_PAT }}  # Assuming 'PAT' is your Personal Access Token stored as a secret
         script: |
-          const issueTitle = `New Release: ${context.payload.release.tag_name} - ${context.payload.release.name}`;
-          const issueBody = `There is a new release, [${context.payload.release.tag_name}](${context.payload.release.html_url}), in this repository. 
-          Please refer to the release notes [here](${context.payload.release.html_url}). This is of maximum urgency.`;
-
           github.rest.issues.create({
             owner: 'TBD54566975',  # Replace with your organization's name
             repo: 'developer.tbd.website',  # Replace with your other repository's name
-            title: issueTitle,
-            body: issueBody,
+            title: "New web5 release just cut",
+            body: "please check the api docs for compatibility with the release",
             labels: ['urgent']  # Add your own labels here
           });
