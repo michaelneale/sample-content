@@ -14,7 +14,7 @@ jobs:
       with:
         github-token: ${{ secrets.DOCS_PAT }}  # Assuming 'PAT' is your Personal Access Token stored as a secret
         script: |
-          const issueTitle = `New testing release ${context.payload.release.tag_name} just cut`;
+          const issueTitle = `A new release ${context.payload.release.tag_name} just cut for ${context.payload.repository.name}.`;
           const issueBody = `Please check the api docs for compatibility with the release. Here is the [link to release notes](${context.payload.release.html_url}).`;
           const labels = ['triage', 'BLOCKER'];
           const issue = await github.rest.issues.create({
@@ -30,4 +30,4 @@ jobs:
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}      
       with:
-        args: "A new release ${{ steps.create-issue.outputs.releaseTag }} of project ${{ steps.create-issue.outputs.repo }} has been cut. @bobbilee-tbd, please check the corresponding issue: https://github.com/TBD54566975/developer.tbd.website/issues/${{ steps.create-issue.outputs.issueNumber }}"
+        args: "A new release ${{ context.payload.release.tag_name }} of project ${{ context.payload.repository.name }} has been cut. ${{ secrets.DISCORD_USER }}, please check the release notes: ${{ context.payload.release.html_url }} for compatibility with docs."
