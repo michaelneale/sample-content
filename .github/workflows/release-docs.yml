@@ -26,7 +26,7 @@ jobs:
           });
           return { issueNumber: issue.data.number, releaseTag: context.payload.release.tag_name, repo: context.payload.repository.name };
     - name: Notify Discord
-      uses: Ilshidur/action-discord@2.0.1
+      uses: Ilshidur/action-discord@0.3.2
       with:
         args: "A new release ${{ steps.create-issue.outputs.releaseTag }} of project ${{ steps.create-issue.outputs.repo }} has been cut. @bobbilee-tbd, please check the corresponding issue: https://github.com/TBD54566975/developer.tbd.website/issues/${{ steps.create-issue.outputs.issueNumber }}"
         webhook: ${{ secrets.DISCORD_WEBHOOK }}  # Assuming 'DISCORD_WEBHOOK' is your Discord webhook URL stored as a secret
