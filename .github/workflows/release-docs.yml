@@ -14,13 +14,19 @@ jobs:
       with:
         github-token: ${{ secrets.DOCS_PAT }}  # Assuming 'PAT' is your Personal Access Token stored as a secret
         script: |
-          const issueTitle = `New web5 release ${context.payload.release.tag_name} just cut`;
+          const issueTitle = `New testing release ${context.payload.release.tag_name} just cut`;
           const issueBody = `Please check the api docs for compatibility with the release. Here is the [link to release notes](${context.payload.release.html_url}).`;
           const labels = ['triage', 'BLOCKER'];
-          github.rest.issues.create({
+          const issue = await github.rest.issues.create({
             owner: 'TBD54566975',
             repo: 'developer.tbd.website',
             title: issueTitle,
             body: issueBody,
             labels: labels
           });
+          return { issueNumber: issue.data.number, releaseTag: context.payload.release.tag_name, repo: context.payload.repository.name };
+    - name: Notify Discord
+      uses: Ilshidur/action-discord@2.0.1
+      with:
+        args: "A new release ${{ steps.create-issue.outputs.releaseTag }} of project ${{ steps.create-issue.outputs.repo }} has been cut. @bobbilee-tbd, please check the corresponding issue: https://github.com/TBD54566975/developer.tbd.website/issues/${{ steps.create-issue.outputs.issueNumber }}"
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}  # Assuming 'DISCORD_WEBHOOK' is your Discord webhook URL stored as a secret
